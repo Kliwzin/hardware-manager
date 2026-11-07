@@ -1,0 +1,9 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/CoreWindows/CoreWindows.csproj" />
+    <Project Path="src/HardwareManager.App/HardwareManager.App.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/CoreWindows.Tests/CoreWindows.Tests.csproj" />
+  </Folder>
+</Solution>
