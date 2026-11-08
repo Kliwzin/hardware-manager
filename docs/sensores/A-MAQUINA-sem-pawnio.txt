@@ -1,0 +1,241 @@
+﻿SensorProbe — A-MAQUINA — 2026-11-08 23:12
+Administrador: sim
+PawnIO: não instalado
+
+[Motherboard] ASUS PRIME H610M-K D4
+    id: /motherboard
+
+[Cpu] 12th Gen Intel Core i5-12400F
+    id: /intelcpu/0
+    Power        CPU Package                              0 W
+    Power        CPU Cores                                0 W
+    Power        CPU Memory                               0 W
+    Power        CPU Platform                             0 W
+    Clock        CPU Core #1                              — sem valor —
+    Clock        CPU Core #2                              — sem valor —
+    Clock        CPU Core #3                              — sem valor —
+    Clock        CPU Core #4                              — sem valor —
+    Clock        CPU Core #5                              — sem valor —
+    Clock        CPU Core #6                              — sem valor —
+    Temperature  Core Max                                 — sem valor —
+    Temperature  Core Average                             — sem valor —
+    Temperature  CPU Core #1                              — sem valor —
+    Temperature  CPU Core #2                              — sem valor —
+    Temperature  CPU Core #3                              — sem valor —
+    Temperature  CPU Core #4                              — sem valor —
+    Temperature  CPU Core #5                              — sem valor —
+    Temperature  CPU Core #6                              — sem valor —
+    Temperature  CPU Package                              — sem valor —
+    Temperature  CPU Core #1 Distance to TjMax            — sem valor —
+    Temperature  CPU Core #2 Distance to TjMax            — sem valor —
+    Temperature  CPU Core #3 Distance to TjMax            — sem valor —
+    Temperature  CPU Core #4 Distance to TjMax            — sem valor —
+    Temperature  CPU Core #5 Distance to TjMax            — sem valor —
+    Temperature  CPU Core #6 Distance to TjMax            — sem valor —
+    Load         CPU Total                                9,49 %
+    Load         CPU Core Max                             31,24 %
+    Load         CPU Core #1 Thread #1                    7,02 %
+    Load         CPU Core #1 Thread #2                    8,87 %
+    Load         CPU Core #2 Thread #1                    28,47 %
+    Load         CPU Core #2 Thread #2                    31,24 %
+    Load         CPU Core #3 Thread #1                    9,8 %
+    Load         CPU Core #3 Thread #2                    6,28 %
+    Load         CPU Core #4 Thread #1                    10,91 %
+    Load         CPU Core #4 Thread #2                    5,36 %
+    Load         CPU Core #5 Thread #1                    1,48 %
+    Load         CPU Core #5 Thread #2                    1,3 %
+    Load         CPU Core #6 Thread #1                    1,48 %
+    Load         CPU Core #6 Thread #2                    1,67 %
+
+[Memory] Virtual Memory
+    id: /vram
+    Load         Memory                                   38,93 %
+    Data         Memory Used                              13,17 GB
+    Data         Memory Available                         20,65 GB
+
+[Memory] Total Memory
+    id: /ram
+    Load         Memory                                   30 %
+    Data         Memory Used                              9,54 GB
+    Data         Memory Available                         22,27 GB
+
+[GpuNvidia] NVIDIA GeForce RTX 4060
+    id: /gpu-nvidia/0
+    Voltage      GPU Core Voltage                         0,88 V
+    Clock        GPU Core                                 210 MHz
+    Clock        GPU Memory                               405 MHz
+    Temperature  GPU Core                                 39 °C
+    Temperature  GPU Hot Spot                             46,94 °C
+    Load         GPU Core                                 40 %
+    Load         GPU Memory Controller                    18 %
+    Load         GPU Video Engine                         0 %
+    Load         GPU Bus                                  29 %
+    Load         GPU Memory                               13,5 %
+    Load         D3D 3D                                   0 %
+    Load         D3D Copy                                 0,01 %
+    Load         D3D Copy                                 0 %
+    Load         D3D NVEnc_1                              0 %
+    Load         D3D Optical Flow Accelerator 0           0 %
+    Load         D3D Overlay                              0 %
+    Load         D3D Security                             0 %
+    Load         D3D Video Decode                         0 %
+    Load         D3D Video Encode                         0 %
+    Load         D3D VR                                   0 %
+    Fan          GPU Fan 1                                0 RPM
+    Fan          GPU Fan 2                                0 RPM
+    Control      GPU Fan 1                                0 %
+    Control      GPU Fan 2                                0 %
+    SmallData    GPU Memory Free                          7082 MB
+    SmallData    GPU Memory Used                          1105 MB
+    SmallData    GPU Memory Total                         8188 MB
+    SmallData    D3D Dedicated Memory Used                881,14 MB
+    SmallData    D3D Shared Memory Used                   68,83 MB
+    Throughput   GPU PCIe Rx                              1289250000 B/s
+    Throughput   GPU PCIe Tx                              97748990 B/s
+
+[Storage] ST4000LM024-2AN17V
+    id: /hdd/1
+    Temperature  Temperature                              38 °C
+    Load         Used Space                               28,16 %
+    Load         Read Activity                            0,01 %
+    Load         Write Activity                           0 %
+    Load         Total Activity                           76,7 %
+    Level        Life                                     0 %
+    Factor       Power On Count                           2657 
+    Factor       Power On Hours                           30032 
+    Data         Data Read                                0 GB
+    Data         Data Written                             0 GB
+    Data         Free Space                               2873,98 GB
+    Data         Total Space                              4000,79 GB
+    Throughput   Read Rate                                98,63 B/s
+    Throughput   Write Rate                               0 B/s
+
+[Storage] TEAM TM8FPD001T
+    id: /nvme/0
+    Temperature  Composite Temperature                    47 °C
+    Temperature  Temperature #1                           46,85 °C
+    Temperature  Temperature #2                           39,85 °C
+    Temperature  Warning Temperature                      89 °C
+    Temperature  Critical Temperature                     94 °C
+    Load         Used Space                               72,48 %
+    Load         Read Activity                            0 %
+    Load         Write Activity                           0,02 %
+    Load         Total Activity                           0 %
+    Level        Life                                     96 %
+    Level        Available Spare                          100 %
+    Level        Available Spare Threshold                1 %
+    Level        Percentage Used                          4 %
+    Factor       Power On Count                           1162 
+    Factor       Power On Hours                           9180 
+    Data         Data Read                                60435 GB
+    Data         Data Written                             40880 GB
+    Data         Free Space                               281,82 GB
+    Data         Total Space                              1024,21 GB
+    Throughput   Read Rate                                0 B/s
+    Throughput   Write Rate                               50392,45 B/s
+
+[Network] Ethernet
+    id: /nic/%7BA6A6D982-0E07-4372-B65E-BE91B7777B0F%7D
+    Load         Network Utilization                      0,06 %
+    Data         Data Uploaded                            11,13 GB
+    Data         Data Downloaded                          2,52 GB
+    Throughput   Upload Speed                             2356,29 B/s
+    Throughput   Download Speed                           77987,04 B/s
+
+[Network] Ethernet (Depurador de Kernel)
+    id: /nic/%7BBC2D0D70-1A4B-44A1-9199-46EF29F2FE86%7D
+    Load         Network Utilization                      NaN %
+    Data         Data Uploaded                            0 GB
+    Data         Data Downloaded                          0 GB
+    Throughput   Upload Speed                             0 B/s
+    Throughput   Download Speed                           0 B/s
+
+[Network] Ethernet-QoS Packet Scheduler-0000
+    id: /nic/%7B0E5B67DC-DB72-11F1-9C72-806E6F6E6963%7D
+    Load         Network Utilization                      0,06 %
+    Data         Data Uploaded                            11,13 GB
+    Data         Data Downloaded                          2,52 GB
+    Throughput   Upload Speed                             2356,32 B/s
+    Throughput   Download Speed                           77988,12 B/s
+
+[Network] Ethernet-WFP 802.3 MAC Layer LightWeight Filter-0000
+    id: /nic/%7B0E5B67DD-DB72-11F1-9C72-806E6F6E6963%7D
+    Load         Network Utilization                      0,06 %
+    Data         Data Uploaded                            11,13 GB
+    Data         Data Downloaded                          2,52 GB
+    Throughput   Upload Speed                             2356,32 B/s
+    Throughput   Download Speed                           77988,12 B/s
+
+[Network] Ethernet-WFP Native MAC Layer LightWeight Filter-0000
+    id: /nic/%7B0E5B67DB-DB72-11F1-9C72-806E6F6E6963%7D
+    Load         Network Utilization                      0,06 %
+    Data         Data Uploaded                            11,13 GB
+    Data         Data Downloaded                          2,52 GB
+    Throughput   Upload Speed                             2356,32 B/s
+    Throughput   Download Speed                           77988,15 B/s
+
+[Network] Ligação de Área Local* 10
+    id: /nic/%7BA14F4116-647C-4683-91CA-F2CB75CFA83F%7D
+    Load         Network Utilization                      NaN %
+    Data         Data Uploaded                            0 GB
+    Data         Data Downloaded                          0 GB
+    Throughput   Upload Speed                             0 B/s
+    Throughput   Download Speed                           0 B/s
+
+[Network] Ligação de Área Local* 5
+    id: /nic/%7B4F838CAD-3B9B-48F7-A920-719AC59F2A6F%7D
+    Load         Network Utilization                      NaN %
+    Data         Data Uploaded                            0 GB
+    Data         Data Downloaded                          0 GB
+    Throughput   Upload Speed                             0 B/s
+    Throughput   Download Speed                           0 B/s
+
+[Network] Ligação de Área Local* 6
+    id: /nic/%7B1B7CC13E-C578-41EA-A75D-11087B51C7D9%7D
+    Load         Network Utilization                      NaN %
+    Data         Data Uploaded                            0 GB
+    Data         Data Downloaded                          0 GB
+    Throughput   Upload Speed                             0 B/s
+    Throughput   Download Speed                           0 B/s
+
+[Network] Ligação de Área Local* 7
+    id: /nic/%7BCEEC4061-6E6E-400A-AA7D-E5B27DD608DE%7D
+    Load         Network Utilization                      NaN %
+    Data         Data Uploaded                            0 GB
+    Data         Data Downloaded                          0 GB
+    Throughput   Upload Speed                             0 B/s
+    Throughput   Download Speed                           0 B/s
+
+[Network] Ligação de Área Local* 8
+    id: /nic/%7B39E39466-AEBA-4536-8007-23648D48E865%7D
+    Load         Network Utilization                      NaN %
+    Data         Data Uploaded                            0 GB
+    Data         Data Downloaded                          0 GB
+    Throughput   Upload Speed                             0 B/s
+    Throughput   Download Speed                           0 B/s
+
+[Network] Ligação de Área Local* 9
+    id: /nic/%7B8046B392-AD84-43B8-AF89-C5C23EA71E21%7D
+    Load         Network Utilization                      NaN %
+    Data         Data Uploaded                            0 GB
+    Data         Data Downloaded                          0 GB
+    Throughput   Upload Speed                             0 B/s
+    Throughput   Download Speed                           0 B/s
+
+[Network] Ligação de Rede Bluetooth
+    id: /nic/%7B10C8BBF8-AEB5-451D-9EA6-75F7FFC14306%7D
+    Load         Network Utilization                      NaN %
+    Data         Data Uploaded                            0 GB
+    Data         Data Downloaded                          0 GB
+    Throughput   Upload Speed                             0 B/s
+    Throughput   Download Speed                           0 B/s
+
+[Network] Wi-Fi
+    id: /nic/%7B2FF3A087-8302-4C0D-A85C-C405A2C8358F%7D
+    Load         Network Utilization                      NaN %
+    Data         Data Uploaded                            0 GB
+    Data         Data Downloaded                          0 GB
+    Throughput   Upload Speed                             0 B/s
+    Throughput   Download Speed                           0 B/s
+
+Total: 176 sensores — 155 com valor, 21 sem valor.
