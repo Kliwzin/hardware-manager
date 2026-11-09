@@ -1,0 +1,60 @@
+﻿<Page x:Class="HardwareManager.App.Pages.SystemPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      Title="Sistema"
+      ScrollViewer.CanContentScroll="False">
+    <Grid Margin="16,8,4,16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,12,12">
+            <ui:Button Content="Atualizar"
+                       Icon="{ui:SymbolIcon ArrowClockwise24}"
+                       Command="{Binding RefreshCommand}" />
+            <ui:ProgressRing Width="20" Height="20" Margin="12,0,0,0" IsIndeterminate="True"
+                             Visibility="{Binding IsLoading, Converter={StaticResource BoolToVisibility}}" />
+            <TextBlock Margin="12,0,0,0" VerticalAlignment="Center" Opacity="0.7" Text="{Binding Status}" />
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Sections}">
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <ui:Card Width="380" Margin="0,0,12,12" VerticalAlignment="Stretch">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Kind}" FontSize="12" Opacity="0.7" />
+                                <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="SemiBold"
+                                           TextWrapping="Wrap" Margin="0,2,0,10" />
+
+                                <ItemsControl ItemsSource="{Binding Lines}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,3">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="130" />
+                                                    <ColumnDefinition Width="*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock Text="{Binding Label}" Opacity="0.7"
+                                                           TextWrapping="Wrap" Margin="0,0,8,0" />
+                                                <TextBlock Grid.Column="1" Text="{Binding Value}" TextWrapping="Wrap" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                            </StackPanel>
+                        </ui:Card>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</Page>

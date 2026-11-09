@@ -6,7 +6,7 @@ using Wpf.Ui.Controls;
 namespace HardwareManager.App.ViewModels;
 
 public sealed partial class MainWindowViewModel(
-    UiSensorFeed feed, OverviewViewModel overview, SensorsViewModel sensors) : ObservableObject
+    UiSensorFeed feed, OverviewViewModel overview, SensorsViewModel sensors, SystemViewModel system) : ObservableObject
 {
     [ObservableProperty] private bool _isLoading = true;
     [ObservableProperty] private bool _showWarning;
@@ -29,9 +29,12 @@ public sealed partial class MainWindowViewModel(
                 "Para instalar: winget install namazso.PawnIO — depois reabra o app.");
         }
 
+        // O inventário (WMI) e a abertura do LHM são independentes: rodam ao mesmo tempo.
+        var inventoryTask = system.RefreshCommand.ExecuteAsync(null);
+
         try
         {
-            await feed.Sensors.Ready; // espera o LHM abrir e fazer a 1ª leitura
+            await feed.Sensors.Ready;
             overview.Build();
             sensors.Build();
         }
@@ -43,6 +46,8 @@ public sealed partial class MainWindowViewModel(
         {
             IsLoading = false;
         }
+
+        await inventoryTask;
     }
 
     private void Warn(InfoBarSeverity severity, string title, string message)

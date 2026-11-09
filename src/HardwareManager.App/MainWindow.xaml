@@ -33,6 +33,9 @@
                 <ui:NavigationViewItem Content="Visão geral"
                                        TargetPageType="{x:Type pages:OverviewPage}"
                                        Icon="{ui:SymbolIcon Home24}" />
+                <ui:NavigationViewItem Content="Sistema"
+                                       TargetPageType="{x:Type pages:SystemPage}"
+                                       Icon="{ui:SymbolIcon Info24}" />
                 <ui:NavigationViewItem Content="Sensores"
                                        TargetPageType="{x:Type pages:SensorsPage}"
                                        Icon="{ui:SymbolIcon Table24}" />

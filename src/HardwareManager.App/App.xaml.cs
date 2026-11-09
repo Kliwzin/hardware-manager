@@ -29,6 +29,8 @@ public partial class App : Application
         services.AddSingleton<OverviewPage>();
         services.AddSingleton<SensorsViewModel>();
         services.AddSingleton<SensorsPage>();
+        services.AddSingleton<SystemViewModel>();
+        services.AddSingleton<SystemPage>();
 
         _services = services.BuildServiceProvider();
 
