@@ -11,6 +11,12 @@ if (args is ["live"])
     return;
 }
 
+if (args is ["timing"])
+{
+    TimingMode.Run();
+    return;
+}
+
 // Rótulo do arquivo de saída: "sem-pawnio", "com-pawnio", etc.
 string tag = args.Length > 0 ? args[0] : "teste";
 

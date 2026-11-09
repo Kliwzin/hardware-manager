@@ -71,14 +71,23 @@ public sealed class SensorService : IAsyncDisposable
         SnapshotTaken?.Invoke(this, snapshot);
     }
 
+    private bool _disposed;
+
     public async ValueTask DisposeAsync()
     {
-        if (_cts is null || _loop is null)
+        if (_disposed || _cts is null || _loop is null)
             return;
+        _disposed = true;
 
-        await _cts.CancelAsync();
-        try { await _loop; }
-        catch (OperationCanceledException) { }
+        await _cts.CancelAsync().ConfigureAwait(false);
+        try
+        {
+            await _loop.ConfigureAwait(false);
+        }
+        catch
+        {
+            // Parada normal (cancelamento) ou erro já informado por Ready: nada a fazer ao encerrar.
+        }
         _cts.Dispose();
     }
 }

@@ -1,5 +1,6 @@
 ﻿using CoreWindows.Platform;
 using LibreHardwareMonitor.Hardware;
+using System.Diagnostics;
 
 namespace CoreWindows.Sensors;
 
@@ -10,7 +11,11 @@ namespace CoreWindows.Sensors;
 public sealed class LhmSensorSource : ISensorSource
 {
     private readonly Computer _computer;
-    private readonly List<IHardware> _hardware = [];
+    private readonly List<(IHardware Hardware, string Id)> _hardware = [];
+    private readonly Dictionary<string, TimeSpan> _updateDurations = new();
+
+    /// <summary>Quanto tempo o Update() de cada componente levou na última leitura.</summary>
+    public IReadOnlyDictionary<string, TimeSpan> LastUpdateDurations => _updateDurations;
     private readonly List<(ISensor Sensor, SensorInfo Info)> _sensors = [];
     private readonly List<ComponentInfo> _components = [];
     private readonly List<SensorInfo> _sensorInfos = [];
@@ -53,8 +58,12 @@ public sealed class LhmSensorSource : ISensorSource
     public SensorSnapshot Read()
     {
         // Só atualiza o hardware que passou no filtro (não gasta tempo com rede virtual).
-        foreach (var hw in _hardware)
+        foreach (var (hw, id) in _hardware)
+        {
+            long start = Stopwatch.GetTimestamp();
             hw.Update();
+            _updateDurations[id] = Stopwatch.GetElapsedTime(start);
+        }
 
         var values = new Dictionary<string, double>(_sensors.Count);
         foreach (var (sensor, info) in _sensors)
@@ -75,7 +84,7 @@ public sealed class LhmSensorSource : ISensorSource
             return;
 
         var kind = MapComponent(hw.HardwareType, id);
-        _hardware.Add(hw);
+        _hardware.Add((hw, id));
         _components.Add(new ComponentInfo(id, hw.Name, kind, parentId));
 
         foreach (var sensor in hw.Sensors)
@@ -104,6 +113,7 @@ public sealed class LhmSensorSource : ISensorSource
     {
         HardwareType.Cpu => ComponentKind.Cpu,
         HardwareType.GpuNvidia or HardwareType.GpuAmd or HardwareType.GpuIntel => ComponentKind.Gpu,
+        HardwareType.Memory when id == "/vram" => ComponentKind.VirtualMemory,
         HardwareType.Memory when id.StartsWith("/memory/dimm", StringComparison.Ordinal) => ComponentKind.MemoryModule,
         HardwareType.Memory => ComponentKind.Memory,
         HardwareType.Motherboard => ComponentKind.Motherboard,

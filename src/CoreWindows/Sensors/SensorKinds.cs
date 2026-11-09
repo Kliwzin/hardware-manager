@@ -8,5 +8,5 @@ public enum SensorKind
 
 public enum ComponentKind
 {
-    Cpu, Gpu, Memory, MemoryModule, Motherboard, SuperIO, Storage, Network, Other
+    Cpu, Gpu, Memory, VirtualMemory, MemoryModule, Motherboard, SuperIO, Storage, Network, Other
 }
