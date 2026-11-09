@@ -8,4 +8,8 @@
     <PackageReference Include="LibreHardwareMonitorLib" Version="0.9.6" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\CoreWindows\CoreWindows.csproj" />
+  </ItemGroup>
+
 </Project>

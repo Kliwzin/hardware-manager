@@ -5,6 +5,12 @@ using Microsoft.Win32;
 
 Console.OutputEncoding = Encoding.UTF8;
 
+if (args is ["live"])
+{
+    await LiveMode.RunAsync();
+    return;
+}
+
 // Rótulo do arquivo de saída: "sem-pawnio", "com-pawnio", etc.
 string tag = args.Length > 0 ? args[0] : "teste";
 
