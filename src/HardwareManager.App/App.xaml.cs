@@ -31,6 +31,8 @@ public partial class App : Application
         services.AddSingleton<SensorsPage>();
         services.AddSingleton<SystemViewModel>();
         services.AddSingleton<SystemPage>();
+        services.AddSingleton<DetailViewModel>();
+        services.AddSingleton<DetailPage>();
 
         _services = services.BuildServiceProvider();
 

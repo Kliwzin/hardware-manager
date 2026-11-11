@@ -137,14 +137,19 @@ public sealed class LhmSensorSource : ISensorSource
         (kind == ComponentKind.Storage ? _slowHardware : _fastHardware).Add((hw, id));
         _components.Add(new ComponentInfo(id, hw.Name, kind, parentId));
 
-        foreach (var sensor in hw.Sensors)
-        {
-            // Sem PawnIO, o consumo da CPU vem como 0 W em vez de "sem valor". Melhor esconder.
-            if (!pawnIo && kind == ComponentKind.Cpu && sensor.SensorType == SensorType.Power)
-                continue;
+        // Sem PawnIO, o consumo da CPU vem como 0 W em vez de "sem valor". Melhor esconder.
+        var sensors = hw.Sensors
+            .Where(s => pawnIo || kind != ComponentKind.Cpu || s.SensorType != SensorType.Power)
+            .ToList();
 
-            var info = new SensorInfo(sensor.Identifier.ToString(), id, sensor.Name, MapSensor(sensor.SensorType));
-            _sensors.Add((sensor, info));
+        // O LHM às vezes repete o identificador (ex.: dois sensores /gpu-nvidia/0/load/3).
+        // Como o id é a chave de tudo (leituras, histórico, preferências), cada sensor precisa do seu.
+        var ids = SensorIds.MakeUnique([.. sensors.Select(s => (s.Identifier.ToString(), s.Name))]);
+
+        for (int i = 0; i < sensors.Count; i++)
+        {
+            var info = new SensorInfo(ids[i], id, sensors[i].Name, MapSensor(sensors[i].SensorType));
+            _sensors.Add((sensors[i], info));
             _sensorInfos.Add(info);
         }
 

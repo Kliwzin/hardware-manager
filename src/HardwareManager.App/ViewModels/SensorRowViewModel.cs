@@ -1,7 +1,6 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CoreWindows.Sensors;
 using HardwareManager.App.Services;
-using System.Security.AccessControl;
 
 namespace HardwareManager.App.ViewModels;
 

@@ -1,6 +1,5 @@
 ﻿using CommunityToolkit.Mvvm.ComponentModel;
 using CoreWindows.Sensors;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace HardwareManager.App.ViewModels;
 

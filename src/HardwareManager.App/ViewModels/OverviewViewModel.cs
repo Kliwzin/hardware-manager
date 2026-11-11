@@ -1,21 +1,24 @@
 ﻿using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.ComponentModel;
+using CommunityToolkit.Mvvm.Input;
 using CoreWindows.Sensors;
 using HardwareManager.App.Services;
 
 namespace HardwareManager.App.ViewModels;
 
-public sealed class OverviewViewModel : ObservableObject
+public sealed partial class OverviewViewModel : ObservableObject
 {
     private readonly UiSensorFeed _feed;
     private readonly SensorPreferences _prefs;
+    private readonly DetailViewModel _detail;
 
     public ObservableCollection<ComponentCardViewModel> Cards { get; } = [];
 
-    public OverviewViewModel(UiSensorFeed feed, SensorPreferences prefs)
+    public OverviewViewModel(UiSensorFeed feed, SensorPreferences prefs, DetailViewModel detail)
     {
         _feed = feed;
         _prefs = prefs;
+        _detail = detail;
         _feed.Updated += OnUpdated;
         _prefs.Changed += Build; // renomeou/ocultou na página Sensores → refaz os cards
     }
@@ -40,6 +43,10 @@ public sealed class OverviewViewModel : ObservableObject
         if (_feed.Sensors.Latest is { } latest)
             OnUpdated(latest);
     }
+
+    /// <summary>Clique num card → tela de detalhe daquele componente.</summary>
+    [RelayCommand]
+    private void OpenDetail(ComponentCardViewModel card) => _detail.Show(card.Component);
 
     private void OnUpdated(SensorSnapshot snapshot)
     {

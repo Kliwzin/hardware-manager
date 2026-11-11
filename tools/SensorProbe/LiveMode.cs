@@ -29,5 +29,22 @@ static class LiveMode
         };
 
         await Task.Delay(TimeSpan.FromSeconds(10));
+
+        // Resumo do histórico em memória (Fase 3A).
+        var history = service.History;
+        Console.WriteLine();
+        Console.WriteLine($"Histórico: {history.Count} leituras guardadas (capacidade: {history.Capacity}).");
+        foreach (var s in watched)
+        {
+            if (history.GetStats(s.Id) is not { } stats)
+                continue;
+
+            int points = history.GetSeries(s.Id).Count(p => p.Value is not null);
+            Console.WriteLine(
+                $"  {s.Name,-22} {s.Kind,-12} {points,3} pontos" +
+                $" | mín {SensorFormat.Format(s.Kind, stats.Min)}" +
+                $" | média {SensorFormat.Format(s.Kind, stats.Average)}" +
+                $" | máx {SensorFormat.Format(s.Kind, stats.Max)}");
+        }
     }
 }

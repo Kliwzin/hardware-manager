@@ -1,0 +1,114 @@
+<Page x:Class="HardwareManager.App.Pages.DetailPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:ui="http://schemas.lepo.co/wpfui/2022/xaml"
+      xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF"
+      Title="Detalhe"
+      ScrollViewer.CanContentScroll="False">
+    <Page.Resources>
+        <!--  Cabeçalho e células numéricas da tabela embaixo de cada gráfico.  -->
+        <Style x:Key="TableHeader" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="FontSize" Value="12" />
+            <Setter Property="Opacity" Value="0.7" />
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+        <Style x:Key="TableNumber" TargetType="TextBlock" BasedOn="{StaticResource {x:Type TextBlock}}">
+            <Setter Property="HorizontalAlignment" Value="Right" />
+        </Style>
+    </Page.Resources>
+
+    <Grid Margin="16,8,4,16">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <StackPanel Orientation="Horizontal" Margin="0,0,12,12">
+            <ui:Button Content="Voltar"
+                       Icon="{ui:SymbolIcon ArrowLeft24}"
+                       Command="{Binding BackCommand}" />
+            <StackPanel Margin="16,0,0,0" VerticalAlignment="Center">
+                <TextBlock Text="{Binding KindLabel}" FontSize="12" Opacity="0.7" />
+                <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="SemiBold" />
+            </StackPanel>
+        </StackPanel>
+
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <ItemsControl ItemsSource="{Binding Charts}" Margin="0,0,12,0">
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate>
+                        <ui:Card Margin="0,0,0,12">
+                            <StackPanel>
+                                <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="SemiBold" />
+
+                                <!--  AnimationsSpeed zero: a cada segundo entra um ponto; animar isso só gasta CPU.  -->
+                                <lvc:CartesianChart Height="220" Margin="0,8,0,8"
+                                                    Series="{Binding Series}"
+                                                    XAxes="{Binding XAxes}"
+                                                    YAxes="{Binding YAxes}"
+                                                    AnimationsSpeed="0:0:0" />
+
+                                <Grid Margin="0,0,0,4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="22" />
+                                        <ColumnDefinition Width="*" />
+                                        <ColumnDefinition Width="110" />
+                                        <ColumnDefinition Width="110" />
+                                        <ColumnDefinition Width="110" />
+                                        <ColumnDefinition Width="110" />
+                                    </Grid.ColumnDefinitions>
+                                    <TextBlock Grid.Column="2" Text="Atual" Style="{StaticResource TableHeader}" />
+                                    <TextBlock Grid.Column="3" Text="Mínimo" Style="{StaticResource TableHeader}" />
+                                    <TextBlock Grid.Column="4" Text="Média" Style="{StaticResource TableHeader}" />
+                                    <TextBlock Grid.Column="5" Text="Máximo" Style="{StaticResource TableHeader}" />
+                                </Grid>
+
+                                <!--  Uma linha por sensor. O quadradinho colorido faz o papel de legenda do gráfico.  -->
+                                <ItemsControl ItemsSource="{Binding Rows}">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Margin="0,3">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="22" />
+                                                    <ColumnDefinition Width="*" />
+                                                    <ColumnDefinition Width="110" />
+                                                    <ColumnDefinition Width="110" />
+                                                    <ColumnDefinition Width="110" />
+                                                    <ColumnDefinition Width="110" />
+                                                </Grid.ColumnDefinitions>
+                                                <Border Width="12" Height="12" CornerRadius="3"
+                                                        HorizontalAlignment="Left" VerticalAlignment="Center"
+                                                        Background="{Binding Swatch}" />
+                                                <TextBlock Grid.Column="1" Text="{Binding Label}"
+                                                           TextTrimming="CharacterEllipsis" />
+                                                <TextBlock Grid.Column="2" Text="{Binding Current}" FontWeight="SemiBold">
+                                                    <TextBlock.Style>
+                                                        <Style TargetType="TextBlock" BasedOn="{StaticResource TableNumber}">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsSuspect}" Value="True">
+                                                                    <Setter Property="Opacity" Value="0.4" />
+                                                                    <Setter Property="ToolTip"
+                                                                            Value="Leitura suspeita: fica no gráfico, mas não entra em mínimo, média e máximo." />
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </TextBlock.Style>
+                                                </TextBlock>
+                                                <TextBlock Grid.Column="3" Text="{Binding Min}" Style="{StaticResource TableNumber}" />
+                                                <TextBlock Grid.Column="4" Text="{Binding Average}" Style="{StaticResource TableNumber}" />
+                                                <TextBlock Grid.Column="5" Text="{Binding Max}" Style="{StaticResource TableNumber}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+
+                                <TextBlock Margin="0,6,0,0" FontSize="12" Opacity="0.6"
+                                           Text="Gráfico: últimos 30 minutos. Mínimo, média e máximo: desde que o app abriu." />
+                            </StackPanel>
+                        </ui:Card>
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+        </ScrollViewer>
+    </Grid>
+</Page>
