@@ -7,6 +7,7 @@ internal static class Wmi
 {
     public const string Cimv2 = @"root\cimv2";
     public const string Storage = @"root\Microsoft\Windows\Storage";
+    public const string RootWmi = @"root\wmi";
 
     public static List<T> Query<T>(string query, Func<ManagementBaseObject, T> map, string scope = Cimv2)
     {
@@ -21,6 +22,10 @@ internal static class Wmi
         }
         return list;
     }
+
+    // Propriedades do tipo uint16[] (ex.: textos do EDID). Podem vir nulas.
+    public static ushort[]? Codes(ManagementBaseObject o, string property) =>
+        o[property] as ushort[];
 
     public static string Text(ManagementBaseObject o, string property) =>
         o[property]?.ToString()?.Trim() ?? "";

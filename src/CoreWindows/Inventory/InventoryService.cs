@@ -32,8 +32,41 @@ public static class InventoryService
         var disks = Try("Discos", ReadDisks) ?? [];
         var network = Try("Rede", ReadNetwork) ?? [];
 
-        return new SystemInventory(DateTimeOffset.Now, cpu, memory, board, disks, network, errors);
+        // Monitores vêm de 4 fontes: se uma falhar, as outras ainda preenchem o que sabem.
+        var displays = Try("Monitores (resolução)", NativeDisplays.Read) ?? [];
+        var identities = Try("Monitores (identificação)", ReadMonitorIdentities) ?? [];
+        var dimensions = Try("Monitores (tamanho)", ReadMonitorDimensions) ?? [];
+        var links = Try("Monitores (conexão)", ReadMonitorLinks) ?? [];
+        var monitors = MonitorData.Merge(displays, identities, dimensions, links);
+
+        return new SystemInventory(DateTimeOffset.Now, cpu, memory, board, disks, network, monitors, errors);
     }
+
+    private static IReadOnlyList<MonitorIdentity> ReadMonitorIdentities() =>
+        Wmi.Query(
+            "SELECT InstanceName, ManufacturerName, ProductCodeID, UserFriendlyName, SerialNumberID FROM WmiMonitorID WHERE Active = TRUE",
+            o => new MonitorIdentity(
+                Wmi.Text(o, "InstanceName"),
+                MonitorData.DecodeText(Wmi.Codes(o, "ManufacturerName")),
+                MonitorData.DecodeText(Wmi.Codes(o, "ProductCodeID")),
+                MonitorData.DecodeText(Wmi.Codes(o, "UserFriendlyName")),
+                MonitorData.DecodeSerial(Wmi.Codes(o, "SerialNumberID"))),
+            Wmi.RootWmi);
+
+    private static IReadOnlyList<MonitorDimensions> ReadMonitorDimensions() =>
+        Wmi.Query(
+            "SELECT InstanceName, MaxHorizontalImageSize, MaxVerticalImageSize FROM WmiMonitorBasicDisplayParams WHERE Active = TRUE",
+            o => new MonitorDimensions(
+                Wmi.Text(o, "InstanceName"),
+                (int)Wmi.Number(o, "MaxHorizontalImageSize"),
+                (int)Wmi.Number(o, "MaxVerticalImageSize")),
+            Wmi.RootWmi);
+
+    private static IReadOnlyList<MonitorLink> ReadMonitorLinks() =>
+        Wmi.Query(
+            "SELECT InstanceName, VideoOutputTechnology FROM WmiMonitorConnectionParams WHERE Active = TRUE",
+            o => new MonitorLink(Wmi.Text(o, "InstanceName"), Wmi.Number(o, "VideoOutputTechnology")),
+            Wmi.RootWmi);
 
     private static CpuInventory ReadCpu() =>
         Wmi.Query(

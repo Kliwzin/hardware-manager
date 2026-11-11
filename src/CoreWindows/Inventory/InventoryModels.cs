@@ -25,6 +25,18 @@ public sealed record NetworkAdapterInventory(
     string Name, string Description, string Type, long LinkSpeedBps, string Status, string Mac,
     IReadOnlyList<string> IPv4);
 
+public sealed record DisplayMode(int Width, int Height, int RefreshHz);
+
+public sealed record PhysicalSize(int WidthCm, int HeightCm)
+{
+    public double DiagonalInches => Math.Sqrt(WidthCm * WidthCm + HeightCm * HeightCm) / 2.54;
+}
+
+/// <summary>Size nulo = o EDID não informa. Mode nulo = conectado, mas fora da área de trabalho.</summary>
+public sealed record MonitorInventory(
+    string Name, string Manufacturer, string Serial, string Connection,
+    PhysicalSize? Size, DisplayMode? Mode, bool IsPrimary);
+
 /// <summary>Foto do sistema num instante. Seções nulas/vazias = não puderam ser lidas (ver Errors).</summary>
 public sealed record SystemInventory(
     DateTimeOffset CollectedAt,
@@ -33,4 +45,5 @@ public sealed record SystemInventory(
     BoardInventory? Board,
     IReadOnlyList<DiskInventory> Disks,
     IReadOnlyList<NetworkAdapterInventory> Network,
+    IReadOnlyList<MonitorInventory> Monitors,
     IReadOnlyList<string> Errors);

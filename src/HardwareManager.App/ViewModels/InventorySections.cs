@@ -73,11 +73,37 @@ public static class InventorySections
             ]);
         }
 
+        foreach (var monitor in inv.Monitors)
+        {
+            yield return new InfoSection("Monitor", monitor.Name,
+            [
+                new("Fabricante", OrDash(monitor.Manufacturer)),
+                new("Resolução", monitor.Mode is { } mode ? $"{mode.Width} × {mode.Height}" : "—"),
+                new("Taxa de atualização", monitor.Mode is { RefreshHz: > 1 } rate ? $"{rate.RefreshHz} Hz" : "—"),
+                new("Conexão", monitor.Connection),
+                new("Tamanho", monitor.Size is { } size
+                    ? $"≈ {size.DiagonalInches:0.#}\" ({size.WidthCm} × {size.HeightCm} cm)"
+                    : "—"),
+                new("Nº de série", OrDash(monitor.Serial)),
+                new("Uso", DescribeUsage(monitor)),
+            ]);
+        }
+
         if (inv.Errors.Count > 0)
         {
             yield return new InfoSection("Avisos", "Partes que não puderam ser lidas",
                 inv.Errors.Select(e => new InfoLine("", e)).ToList());
         }
+    }
+
+    private static string OrDash(string text) => string.IsNullOrEmpty(text) ? "—" : text;
+
+    private static string DescribeUsage(MonitorInventory monitor)
+    {
+        if (monitor.Mode is null)
+            return "Conectado, fora da área de trabalho";
+
+        return monitor.IsPrimary ? "Monitor principal" : "Monitor secundário";
     }
 
     private static string DescribeModule(MemoryModule m)

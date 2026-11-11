@@ -39,6 +39,55 @@ public static class InventoryNames
         _ => "outro barramento"
     };
 
+    // VideoOutputTechnology (WmiMonitorConnectionParams).
+    // long porque "Interna" é 0x80000000 e os valores negativos da documentação chegam como uint32.
+    public static string MonitorConnection(long code) => code switch
+    {
+        0 => "VGA",
+        1 => "S-Video",
+        2 => "Vídeo composto",
+        3 => "Vídeo componente",
+        4 => "DVI",
+        5 => "HDMI",
+        6 => "Interna (LVDS)",
+        9 => "SDI",
+        10 => "DisplayPort",
+        11 => "DisplayPort embutido (eDP)",
+        15 => "Miracast (sem fio)",
+        16 => "Indireta com fio (ex.: USB)",
+        0x80000000 => "Interna",
+        _ => "Desconhecida"
+    };
+
+    // Código PnP de 3 letras do EDID. Lista só com as marcas comuns; o resto mostra o próprio código.
+    public static string MonitorManufacturer(string code) => code switch
+    {
+        "ACI" or "AUS" => "ASUS",
+        "ACR" => "Acer",
+        "AOC" => "AOC",
+        "APP" => "Apple",
+        "AUO" => "AU Optronics",
+        "BNQ" => "BenQ",
+        "BOE" => "BOE",
+        "CMN" => "Innolux",
+        "DEL" => "Dell",
+        "ENC" => "EIZO",
+        "GBT" => "Gigabyte",
+        "GSM" => "LG",
+        "HPN" or "HWP" => "HP",
+        "IVM" => "iiyama",
+        "LEN" => "Lenovo",
+        "LGD" => "LG Display",
+        "MSI" => "MSI",
+        "PHL" => "Philips",
+        "SAM" => "Samsung",
+        "SDC" => "Samsung Display",
+        "SHP" => "Sharp",
+        "SNY" => "Sony",
+        "VSC" => "ViewSonic",
+        _ => code
+    };
+
     // HealthStatus (MSFT_PhysicalDisk)
     public static string Health(int code) => code switch
     {
