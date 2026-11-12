@@ -42,7 +42,9 @@
                                 <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="SemiBold" />
 
                                 <!--  AnimationsSpeed zero: a cada segundo entra um ponto; animar isso só gasta CPU.  -->
+                                <!--  Background: sem ele, o LiveCharts pinta o fundo de branco mesmo no tema escuro.  -->
                                 <lvc:CartesianChart Height="220" Margin="0,8,0,8"
+                                                    Background="{Binding Background}"
                                                     Series="{Binding Series}"
                                                     XAxes="{Binding XAxes}"
                                                     YAxes="{Binding YAxes}"

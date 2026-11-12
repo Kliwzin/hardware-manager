@@ -17,6 +17,12 @@ public sealed class ChartViewModel
         Rows = rows;
         var kind = group.Kind;
 
+        // Pincel opaco: o gráfico usa a cor do próprio Background para limpar a tela a cada quadro.
+        var surface = new System.Windows.Media.SolidColorBrush(System.Windows.Media.Color.FromRgb(
+            colors.Surface.Red, colors.Surface.Green, colors.Surface.Blue));
+        surface.Freeze();
+        Background = surface;
+
         Series =
         [
             .. rows.Select(row => new LineSeries<DateTimePoint>
@@ -53,12 +59,16 @@ public sealed class ChartViewModel
                 SeparatorsPaint = new SolidColorPaint(colors.GridLine, 1),
                 MinLimit = min,
                 MaxLimit = max,
+                MinStep = MinStepFor(kind),
             },
         ];
     }
 
     public string Title { get; }
     public IReadOnlyList<ChartRowViewModel> Rows { get; }
+
+    /// <summary>Fundo da área do gráfico, na cor do tema atual.</summary>
+    public System.Windows.Media.Brush Background { get; }
 
     public ISeries[] Series { get; }
     public ICartesianAxis[] XAxes { get; }
@@ -79,5 +89,16 @@ public sealed class ChartViewModel
         SensorKind.Load or SensorKind.Control or SensorKind.Level => (0, 100),
         SensorKind.Temperature or SensorKind.Voltage => (null, null),
         _ => (0, null)
+    };
+
+    /// <summary>
+    /// Menor distância entre duas marcas do eixo Y. Tipos exibidos sem casas decimais (RPM, MHz, MB)
+    /// usam 1: com passo menor, o eixo repetia o mesmo rótulo ("0 RPM, 0 RPM, 0 RPM, 1 RPM").
+    /// Zero = o gráfico escolhe sozinho.
+    /// </summary>
+    private static double MinStepFor(SensorKind kind) => kind switch
+    {
+        SensorKind.Fan or SensorKind.Clock or SensorKind.Factor or SensorKind.SmallData => 1,
+        _ => 0
     };
 }
