@@ -16,6 +16,9 @@ public sealed partial class MainWindowViewModel(
 
     public async Task InitializeAsync()
     {
+        // Falhas depois que o app já abriu (leitura de sensores ou gravação do histórico).
+        feed.Failed += (title, message) => Warn(InfoBarSeverity.Error, title, message);
+
         if (!DriverStatus.IsAdministrator)
         {
             Warn(InfoBarSeverity.Warning, "Sem permissão de administrador",

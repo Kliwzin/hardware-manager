@@ -3,7 +3,8 @@
 /// <summary>
 /// Lê a fonte de sensores em intervalo fixo, numa tarefa em segundo plano,
 /// e guarda as leituras recentes em <see cref="History"/>.
-/// ATENÇÃO: SnapshotTaken é disparado fora da thread da interface.
+/// Uma leitura que falha não para o serviço: ele avisa por <see cref="ReadFailed"/> e tenta de novo no ciclo seguinte.
+/// ATENÇÃO: SnapshotTaken e ReadFailed são disparados fora da thread da interface.
 /// </summary>
 public sealed class SensorService : IAsyncDisposable
 {
@@ -41,6 +42,15 @@ public sealed class SensorService : IAsyncDisposable
 
     public event EventHandler<SensorSnapshot>? SnapshotTaken;
 
+    /// <summary>Erro do último ciclo de leitura; nulo se ele deu certo.</summary>
+    public Exception? LastError { get; private set; }
+
+    /// <summary>
+    /// Disparado quando um ciclo falha depois de outro ter dado certo (uma vez por sequência de falhas,
+    /// não a cada segundo). A falha pode vir da leitura do hardware ou de quem assina SnapshotTaken.
+    /// </summary>
+    public event EventHandler<Exception>? ReadFailed;
+
     public void Start()
     {
         if (_loop is not null)
@@ -67,7 +77,7 @@ public sealed class SensorService : IAsyncDisposable
 
             using var timer = new PeriodicTimer(_interval);
             while (await timer.WaitForNextTickAsync(ct))
-                Publish(_source.Read());
+                ReadOnce(_source);
         }
         catch (OperationCanceledException) when (ct.IsCancellationRequested)
         {
@@ -81,6 +91,23 @@ public sealed class SensorService : IAsyncDisposable
         finally
         {
             _source?.Dispose();
+        }
+    }
+
+    /// <summary>Um ciclo do laço. Nenhuma exceção sai daqui: antes, a primeira falha encerrava o laço em silêncio.</summary>
+    private void ReadOnce(ISensorSource source)
+    {
+        try
+        {
+            Publish(source.Read());
+            LastError = null;
+        }
+        catch (Exception ex)
+        {
+            bool first = LastError is null;
+            LastError = ex;
+            if (first)
+                ReadFailed?.Invoke(this, ex);
         }
     }
 

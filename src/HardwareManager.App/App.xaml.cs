@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using CoreWindows.Sensors;
+using CoreWindows.Storage;
 using HardwareManager.App.Pages;
 using HardwareManager.App.Services;
 using HardwareManager.App.ViewModels;
@@ -19,6 +20,8 @@ public partial class App : Application
 
         // Núcleo
         services.AddSingleton(_ => new SensorService(LhmSensorSource.CreateDefault));
+        services.AddSingleton(_ => new HistoryStore(HistoryStore.PathFor("HardwareManager")));
+        services.AddSingleton<HistoryRecorder>();
         services.AddSingleton<UiSensorFeed>();
         services.AddSingleton<SensorPreferences>();
 
@@ -36,13 +39,16 @@ public partial class App : Application
 
         _services = services.BuildServiceProvider();
 
+        // O gravador assina as leituras antes de o serviço começar, para não perder a primeira.
+        _services.GetRequiredService<HistoryRecorder>().Start();
         _services.GetRequiredService<SensorService>().Start();
         _services.GetRequiredService<MainWindow>().Show();
     }
 
     protected override void OnExit(ExitEventArgs e)
     {
-        // Descarta tudo o que o contêiner criou. O SensorService para o laço e fecha o LHM.
+        // Descarta tudo o que o contêiner criou, na ordem inversa da criação: primeiro o HistoryRecorder
+        // (grava o minuto em andamento), depois o SensorService (para o laço e fecha o LHM).
         // Bloquear aqui é seguro porque o CoreWindows usa ConfigureAwait(false).
         _services?.DisposeAsync().AsTask().GetAwaiter().GetResult();
         base.OnExit(e);

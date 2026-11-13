@@ -8,6 +8,49 @@ public class SensorServiceTests
     /// Fonte falsa: a carga devolve 1, 2, 3... a cada leitura; a temperatura fica sempre em -14 °C
     /// (como uma entrada da placa-mãe sem nada ligado). Não precisa de hardware nem admin.
     /// </summary>
+    ///
+
+
+    /// <summary>Fonte instável: a 3ª e a 4ª leituras lançam exceção; as outras funcionam.</summary>
+    private sealed class FlakySource : ISensorSource
+    {
+        public int Reads;
+
+        public IReadOnlyList<ComponentInfo> Components { get; } =
+            [new("/fake/0", "Fake", ComponentKind.Other, null)];
+
+        public IReadOnlyList<SensorInfo> Sensors { get; } =
+            [new("/fake/0/load/0", "/fake/0", "Load", SensorKind.Load)];
+
+        public SensorSnapshot Read()
+        {
+            int read = Interlocked.Increment(ref Reads);
+            if (read is 3 or 4)
+                throw new InvalidOperationException("falha simulada");
+
+            return new(DateTimeOffset.Now, new Dictionary<string, double> { ["/fake/0/load/0"] = read });
+        }
+
+        public void Dispose() { }
+    }
+
+    [Fact]
+    public async Task Leitura_que_falha_nao_para_o_laco_e_avisa_uma_vez()
+    {
+        var source = new FlakySource();
+        int failures = 0;
+
+        await using var service = new SensorService(() => source, TimeSpan.FromMilliseconds(20));
+        service.ReadFailed += (_, _) => Interlocked.Increment(ref failures);
+        service.Start();
+        await service.Ready;
+        await Task.Delay(300);
+
+        Assert.True(source.Reads >= 6, $"O laço parou depois da falha ({source.Reads} leituras).");
+        Assert.Equal(1, failures);          // duas falhas seguidas = um aviso só
+        Assert.Null(service.LastError);     // voltou a ler normalmente
+        Assert.True(service.Latest!.Values["/fake/0/load/0"] >= 5);
+    }
     private sealed class FakeSource : ISensorSource
     {
         public int Reads;
