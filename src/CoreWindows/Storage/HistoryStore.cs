@@ -177,6 +177,20 @@ public sealed class HistoryStore
     public IReadOnlyList<HistoryRow> ReadHours(string sensorId, DateTimeOffset from, DateTimeOffset to)
         => Read("hour", 3600, sensorId, from, to);
 
+    /// <summary>
+    /// Um sensor num período do histórico longo, pronto para o gráfico: escolhe a tabela (minutos ou horas)
+    /// pelo período e junta as linhas no tamanho de ponto dele. Sensor sem dados → <see cref="HistorySeries.Empty"/>.
+    /// </summary>
+    /// <param name="now">O "agora" da consulta: o período termina no ponto que contém este horário.</param>
+    public HistorySeries ReadSeries(string sensorId, HistoryRange range, DateTimeOffset now)
+    {
+        var (from, to) = range.Window(now);
+        var rows = range.Table == HistoryTable.Minute
+            ? ReadMinutes(sensorId, from, to)
+            : ReadHours(sensorId, from, to);
+        return HistorySeries.From(rows, range.Bucket);
+    }
+
     /// <summary>Apaga o que passou do prazo de retenção. Devolve quantas linhas saíram.</summary>
     public int Prune(DateTimeOffset now)
     {

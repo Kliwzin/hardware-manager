@@ -148,6 +148,83 @@ public sealed class HistoryStoreTests : IDisposable
     }
 
     [Fact]
+    public void Periodo_de_24_h_le_os_minutos_e_marca_o_buraco()
+    {
+        var store = NewStore();
+        store.Write(Batch(0, Cpu, 30, 29, 31));
+        store.Write(Batch(1, Cpu, 32, 31, 33));
+        store.Write(Batch(10, Cpu, 50, 48, 70)); // nada entre 12:02 e 12:09
+        store.Write(Batch(10, Gpu, 99, 99, 99)); // outro sensor: não pode entrar
+
+        var series = store.ReadSeries(Cpu, HistoryRange.Day, now: Noon.AddMinutes(10).AddSeconds(30));
+
+        HistoryPoint[] expected =
+        [
+            new(Noon, 30),
+            new(Noon.AddMinutes(1), 32),
+            new(Noon.AddMinutes(2), null),
+            new(Noon.AddMinutes(10), 50),
+        ];
+        Assert.Equal<HistoryPoint>(expected, series.Points);
+        Assert.Equal(new SensorStats(Min: 29, Max: 70, Average: (30 + 32 + 50) / 3.0, Samples: 180), series.Stats);
+    }
+
+    [Fact]
+    public void Periodo_de_24_h_inclui_o_minuto_atual_e_deixa_de_fora_o_que_tem_mais_de_24_h()
+    {
+        var store = NewStore();
+        store.Write(Batch(-24 * 60, Cpu, 10, 10, 10));     // ontem 12:00: fora
+        store.Write(Batch(-24 * 60 + 1, Cpu, 20, 20, 20)); // ontem 12:01: primeiro minuto da janela
+        store.Write(Batch(0, Cpu, 30, 30, 30));            // minuto em andamento (gravado ao fechar o app)
+
+        var series = store.ReadSeries(Cpu, HistoryRange.Day, now: Noon.AddSeconds(20));
+
+        Assert.Equal(Noon.AddDays(-1).AddMinutes(1), series.Points[0].Timestamp);
+        Assert.Equal(new HistoryPoint(Noon, 30), series.Points[^1]);
+        Assert.Equal(120, series.Stats!.Value.Samples);
+    }
+
+    [Fact]
+    public void Periodos_longos_leem_as_horas_e_o_de_1_ano_junta_de_6_em_6()
+    {
+        var store = NewStore();
+        store.Write(Batch(0, Cpu, 30, 29, 31));        // 12:00
+        store.Write(Batch(30, Cpu, 40, 39, 41));       // 12:30 → mesma hora
+        store.Write(Batch(60, Cpu, 50, 49, 51));       // 13:00
+        store.Write(Batch(6 * 60, Cpu, 70, 69, 71));   // 18:00 → outro intervalo de 6 h
+
+        var now = Noon.AddHours(6).AddMinutes(5);
+        var week = store.ReadSeries(Cpu, HistoryRange.Week, now);
+        var year = store.ReadSeries(Cpu, HistoryRange.Year, now);
+
+        // 7 dias: um ponto por hora (12:00, 13:00, buraco às 14:00, 18:00).
+        HistoryPoint[] byHour =
+        [
+            new(Noon, 35),
+            new(Noon.AddHours(1), 50),
+            new(Noon.AddHours(2), null),
+            new(Noon.AddHours(6), 70),
+        ];
+        Assert.Equal<HistoryPoint>(byHour, week.Points);
+
+        // 1 ano: 12:00 e 13:00 caem no mesmo ponto; os dois pontos são vizinhos, sem buraco.
+        HistoryPoint[] bySixHours = [new(Noon, 40), new(Noon.AddHours(6), 70)];
+        Assert.Equal<HistoryPoint>(bySixHours, year.Points);
+        Assert.Equal(week.Stats, year.Stats);
+        Assert.Equal(new SensorStats(Min: 29, Max: 71, Average: 47.5, Samples: 240), year.Stats);
+    }
+
+    [Fact]
+    public void Periodo_de_sensor_desconhecido_ou_sem_dados_e_vazio()
+    {
+        var store = NewStore();
+        store.Write(Batch(0, Cpu, 30, 30, 30));
+
+        Assert.Same(HistorySeries.Empty, store.ReadSeries("/nao/existe", HistoryRange.Day, Noon));
+        Assert.Same(HistorySeries.Empty, store.ReadSeries(Gpu, HistoryRange.Month, Noon));
+    }
+
+    [Fact]
     public void Info_resume_o_banco()
     {
         var store = NewStore();

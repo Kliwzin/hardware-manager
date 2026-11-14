@@ -20,20 +20,49 @@
     <Grid Margin="16,8,4,16">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal" Margin="0,0,12,12">
+        <Grid Margin="0,0,12,12">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
             <ui:Button Content="Voltar"
                        Icon="{ui:SymbolIcon ArrowLeft24}"
                        Command="{Binding BackCommand}" />
-            <StackPanel Margin="16,0,0,0" VerticalAlignment="Center">
+            <StackPanel Grid.Column="1" Margin="16,0,16,0" VerticalAlignment="Center">
                 <TextBlock Text="{Binding KindLabel}" FontSize="12" Opacity="0.7" />
-                <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="SemiBold" />
+                <TextBlock Text="{Binding Title}" FontSize="16" FontWeight="SemiBold"
+                           TextTrimming="CharacterEllipsis" />
             </StackPanel>
-        </StackPanel>
 
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <!--  Seletor de período: uma lista deitada, de seleção única. Vale para todos os gráficos da página.  -->
+            <ListBox Grid.Column="2" VerticalAlignment="Center"
+                     ItemsSource="{Binding Periods}"
+                     SelectedItem="{Binding SelectedPeriod, Mode=TwoWay}"
+                     DisplayMemberPath="Label"
+                     Background="Transparent" BorderThickness="0"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                     ToolTip="Período mostrado nos gráficos">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+            </ListBox>
+        </Grid>
+
+        <!--  Aviso do histórico longo: período ainda sem dados ou falha ao ler o banco.  -->
+        <TextBlock Grid.Row="1" Margin="0,0,12,12" Opacity="0.8" TextWrapping="Wrap"
+                   Text="{Binding Notice}"
+                   Visibility="{Binding HasNotice, Converter={StaticResource BoolToVisibility}}" />
+
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
             <ItemsControl ItemsSource="{Binding Charts}" Margin="0,0,12,0">
                 <ItemsControl.ItemTemplate>
                     <DataTemplate>
@@ -104,8 +133,9 @@
                                     </ItemsControl.ItemTemplate>
                                 </ItemsControl>
 
-                                <TextBlock Margin="0,6,0,0" FontSize="12" Opacity="0.6"
-                                           Text="Gráfico: últimos 30 minutos. Mínimo, média e máximo: desde que o app abriu." />
+                                <!--  O texto muda com o período: quem sabe o que o gráfico mostra é o ChartViewModel.  -->
+                                <TextBlock Margin="0,6,0,0" FontSize="12" Opacity="0.6" TextWrapping="Wrap"
+                                           Text="{Binding Caption}" />
                             </StackPanel>
                         </ui:Card>
                     </DataTemplate>
