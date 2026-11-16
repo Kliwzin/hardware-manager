@@ -54,7 +54,7 @@ public static class DetailCharts
                 [new("GPU", "GPU Core"),
                  new("Memória", "GPU Memory")]),
             new("Consumo", SensorKind.Power,
-                [new("GPU", "GPU Package")]),
+                [new("GPU", "GPU Package", "GPU Power")]),
             new("VRAM", SensorKind.SmallData,
                 [new("Em uso", "GPU Memory Used")]),
             new("Ventoinhas", SensorKind.Fan,

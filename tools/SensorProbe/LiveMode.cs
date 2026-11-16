@@ -7,7 +7,7 @@ static class LiveMode
     {
         Console.WriteLine($"Admin: {DriverStatus.IsAdministrator} | PawnIO: {DriverStatus.PawnIoVersion ?? "não instalado"}");
 
-        await using var service = new SensorService(LhmSensorSource.CreateDefault);
+        await using var service = new SensorService(CompositeSensorSource.CreateDefault);
         service.Start();
         await service.Ready;
 

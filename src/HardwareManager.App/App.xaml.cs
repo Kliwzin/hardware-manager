@@ -19,7 +19,7 @@ public partial class App : Application
         var services = new ServiceCollection();
 
         // Núcleo
-        services.AddSingleton(_ => new SensorService(LhmSensorSource.CreateDefault));
+        services.AddSingleton(_ => new SensorService(CompositeSensorSource.CreateDefault));
         services.AddSingleton(_ => new HistoryStore(HistoryStore.PathFor("HardwareManager")));
         services.AddSingleton<HistoryRecorder>();
         services.AddSingleton<UiSensorFeed>();

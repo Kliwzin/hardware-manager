@@ -1,0 +1,94 @@
+﻿SensorProbe NVML — A-MAQUINA — 2026-11-16 14:37
+Biblioteca: C:\Windows\system32\nvml.dll
+Driver: 581.80 | NVML: 13.581.80 | abrir: 23 ms
+GPUs: 1
+
+[0] NVIDIA GeForce RTX 4060
+    Consumo agora:            NÃO — não suportado por esta placa/driver
+    Limite de potência:       115,0 W
+    Temperatura:              35 °C
+    Limite: desligamento      100 °C
+    Limite: redução (hw)      95 °C
+    Limite: máximo da GPU     90 °C
+    Limite: máximo da memória NÃO — não suportado por esta placa/driver
+    Utilização:               0 %
+    Clock do núcleo:          210 MHz
+    Clock da memória:         405 MHz
+    Motivos que a placa informa: GPU ociosa, clocks definidos por aplicativo, limite de potência (software), redução de clock por hardware, sync boost, limite térmico (software), limite térmico (hardware), freio de potência (hardware), limitado pelo clock de vídeo (0x1FF)
+    Motivos agora:               GPU ociosa (0x1)
+    Tempo segurado (potência): 67,084 s
+    Tempo segurado (térmico): 0,000 s
+    Tempo segurado (limite da placa): 0,000 s
+    Tempo segurado (confiabilidade): 0,000 s
+    Tempo segurado (abaixo do clock base): 2240,938 s
+
+Acompanhando por 60 s (uma leitura por segundo). Ctrl+C interrompe sem salvar.
+hora      gpu  uso   temp   clock      consumo   segurado no último segundo / motivos
+14:37:49  [0]    0%   35°C    210MHz         —   GPU ociosa (0x1)
+14:37:50  [0]    0%   35°C    210MHz         —   abaixo do clock base 1018 ms | GPU ociosa (0x1)
+14:37:51  [0]    0%   35°C    210MHz         —   abaixo do clock base 1015 ms | GPU ociosa (0x1)
+14:37:52  [0]    0%   35°C    210MHz         —   abaixo do clock base 1014 ms | GPU ociosa (0x1)
+14:37:53  [0]    0%   35°C    210MHz         —   abaixo do clock base 1002 ms | GPU ociosa (0x1)
+14:37:54  [0]    0%   35°C    210MHz         —   abaixo do clock base 1011 ms | GPU ociosa (0x1)
+14:37:55  [0]    9%   35°C    210MHz         —   abaixo do clock base 1003 ms | GPU ociosa (0x1)
+14:37:56  [0]    0%   35°C    210MHz         —   abaixo do clock base 1012 ms | GPU ociosa (0x1)
+14:37:57  [0]    0%   35°C    210MHz         —   abaixo do clock base 1003 ms | GPU ociosa (0x1)
+14:37:58  [0]   82%   36°C    210MHz         —   potência 20 ms | abaixo do clock base 704 ms | GPU ociosa (0x1)
+14:37:59  [0]    0%   36°C   2505MHz         —   GPU ociosa (0x1)
+14:38:00  [0]    3%   36°C    540MHz         —   abaixo do clock base 529 ms | GPU ociosa (0x1)
+14:38:01  [0]    3%   36°C    330MHz         —   abaixo do clock base 1014 ms | GPU ociosa (0x1)
+14:38:02  [0]    0%   36°C    210MHz         —   abaixo do clock base 1010 ms | GPU ociosa (0x1)
+14:38:03  [0]    0%   35°C    210MHz         —   abaixo do clock base 1013 ms | GPU ociosa (0x1)
+14:38:04  [0]    0%   35°C    210MHz         —   abaixo do clock base 1005 ms | GPU ociosa (0x1)
+14:38:05  [0]    0%   35°C    210MHz         —   abaixo do clock base 1003 ms | GPU ociosa (0x1)
+14:38:06  [0]    0%   35°C    210MHz         —   abaixo do clock base 1016 ms | GPU ociosa (0x1)
+14:38:07  [0]    0%   35°C    210MHz         —   abaixo do clock base 1005 ms | GPU ociosa (0x1)
+14:38:08  [0]    0%   35°C    210MHz         —   abaixo do clock base 1005 ms | GPU ociosa (0x1)
+14:38:09  [0]    5%   35°C    210MHz         —   abaixo do clock base 1010 ms | GPU ociosa (0x1)
+14:38:10  [0]    0%   35°C    210MHz         —   abaixo do clock base 1004 ms | GPU ociosa (0x1)
+14:38:11  [0]    0%   35°C    210MHz         —   abaixo do clock base 1010 ms | GPU ociosa (0x1)
+14:38:12  [0]    0%   35°C    210MHz         —   abaixo do clock base 1015 ms | GPU ociosa (0x1)
+14:38:13  [0]    0%   35°C    210MHz         —   abaixo do clock base 1005 ms | GPU ociosa (0x1)
+14:38:14  [0]    0%   35°C    210MHz         —   abaixo do clock base 1016 ms | GPU ociosa (0x1)
+14:38:15  [0]    0%   35°C    210MHz         —   abaixo do clock base 1014 ms | GPU ociosa (0x1)
+14:38:16  [0]    0%   35°C    210MHz         —   abaixo do clock base 1002 ms | GPU ociosa (0x1)
+14:38:17  [0]    0%   35°C    210MHz         —   abaixo do clock base 1015 ms | GPU ociosa (0x1)
+14:38:18  [0]    5%   35°C    210MHz         —   abaixo do clock base 1002 ms | GPU ociosa (0x1)
+14:38:19  [0]    0%   35°C    210MHz         —   abaixo do clock base 1016 ms | GPU ociosa (0x1)
+14:38:20  [0]   20%   36°C    315MHz         —   abaixo do clock base 1010 ms | GPU ociosa (0x1)
+14:38:21  [0]   16%   35°C    315MHz         —   abaixo do clock base 1009 ms | GPU ociosa (0x1)
+14:38:22  [0]    0%   35°C    210MHz         —   abaixo do clock base 1012 ms | GPU ociosa (0x1)
+14:38:23  [0]    0%   35°C    210MHz         —   abaixo do clock base 1015 ms | GPU ociosa (0x1)
+14:38:24  [0]    0%   35°C    210MHz         —   abaixo do clock base 1010 ms | GPU ociosa (0x1)
+14:38:25  [0]    0%   35°C    210MHz         —   abaixo do clock base 1005 ms | GPU ociosa (0x1)
+14:38:26  [0]    0%   35°C    210MHz         —   abaixo do clock base 1018 ms | GPU ociosa (0x1)
+14:38:27  [0]    0%   35°C    210MHz         —   abaixo do clock base 1003 ms | GPU ociosa (0x1)
+14:38:28  [0]    0%   35°C    210MHz         —   abaixo do clock base 1015 ms | GPU ociosa (0x1)
+14:38:29  [0]    0%   35°C    210MHz         —   abaixo do clock base 1014 ms | GPU ociosa (0x1)
+14:38:30  [0]    8%   35°C    330MHz         —   abaixo do clock base 1014 ms | GPU ociosa (0x1)
+14:38:31  [0]    0%   35°C    210MHz         —   abaixo do clock base 1003 ms | GPU ociosa (0x1)
+14:38:32  [0]    0%   35°C    210MHz         —   abaixo do clock base 1012 ms | GPU ociosa (0x1)
+14:38:33  [0]    0%   35°C    210MHz         —   abaixo do clock base 1017 ms | GPU ociosa (0x1)
+14:38:34  [0]    0%   35°C    210MHz         —   abaixo do clock base 1015 ms | GPU ociosa (0x1)
+14:38:35  [0]    0%   35°C    210MHz         —   abaixo do clock base 1013 ms | GPU ociosa (0x1)
+14:38:36  [0]    0%   35°C    210MHz         —   abaixo do clock base 1013 ms | GPU ociosa (0x1)
+14:38:37  [0]    4%   35°C    210MHz         —   abaixo do clock base 1014 ms | GPU ociosa (0x1)
+14:38:38  [0]   17%   35°C    210MHz         —   abaixo do clock base 1017 ms | GPU ociosa (0x1)
+14:38:39  [0]    0%   35°C    210MHz         —   abaixo do clock base 1003 ms | GPU ociosa (0x1)
+14:38:40  [0]    0%   35°C    210MHz         —   abaixo do clock base 1013 ms | GPU ociosa (0x1)
+14:38:41  [0]    0%   35°C    210MHz         —   abaixo do clock base 1008 ms | GPU ociosa (0x1)
+14:38:42  [0]    0%   35°C    210MHz         —   abaixo do clock base 1008 ms | GPU ociosa (0x1)
+14:38:43  [0]    0%   35°C    210MHz         —   abaixo do clock base 1003 ms | GPU ociosa (0x1)
+14:38:44  [0]    0%   35°C    210MHz         —   abaixo do clock base 1007 ms | GPU ociosa (0x1)
+14:38:45  [0]    0%   35°C    210MHz         —   abaixo do clock base 1011 ms | GPU ociosa (0x1)
+14:38:46  [0]    0%   35°C    210MHz         —   abaixo do clock base 1015 ms | GPU ociosa (0x1)
+14:38:47  [0]    0%   35°C    210MHz         —   abaixo do clock base 1009 ms | GPU ociosa (0x1)
+14:38:48  [0]    0%   35°C    210MHz         —   abaixo do clock base 1007 ms | GPU ociosa (0x1)
+
+Custo de cada leitura (todas as consultas, todas as GPUs): média 1,74 ms, pior 7,09 ms.
+
+[0] NVIDIA GeForce RTX 4060 — 60 leituras
+    Consumo: sem leitura
+    Motivo "GPU ociosa": em 60 de 60 leituras
+    Tempo segurado (potência): 0,020 s no período
+    Tempo segurado (abaixo do clock base): 57,800 s no período
